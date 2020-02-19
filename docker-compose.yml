@@ -1,0 +1,40 @@
+version: '3'
+services:
+  # Nginx Web server
+  # web:
+  #   image: nginx:alpine
+  #   ports:
+  #     - 80:80
+  #   restart: unless-stopped
+  # PHP-FPM
+  # phpfpm:
+  #   build:
+  #     context: ./php-fpm
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./web:/var/www/web
+  #   restart: unless-stopped
+  # Relational database - mariadb 10.3
+  db:
+    image: mariadb:10.3
+    ports:
+      - 3306:3306
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    environment:
+      - MYSQL_DATABASE=mielevelup
+      - MYSQL_USER=mielevelup
+      - MYSQL_PASSWORD=mielevelup
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./flarum-db:/var/lib/mysql
+    restart: unless-stopped
+  #phpmyadmin
+  pma:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 9000:80
+    environment:
+      - PMA_HOST=db
+    restart: unless-stopped
+    
+    
